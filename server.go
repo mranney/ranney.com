@@ -72,9 +72,12 @@ func (h *loggingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tlsStr := fmt.Sprintf("tls=true version=%s server_name=%s", versionStr, r.TLS.ServerName)
-	fmt.Printf("method=%s url=%s proto=%d.%d host=%s remote=%s code=%d bytes=%d %s\n",
+
+	refStr := r.Header.Get("Referer")
+
+	fmt.Printf("method=%s url=%s proto=%d.%d host=%s remote=%s code=%d bytes=%d ref=%s %s\n",
 		r.Method, r.URL.String(), r.ProtoMajor, r.ProtoMinor, r.Host, r.RemoteAddr,
-		resStats.StatusCode, resStats.ResponseBytes, tlsStr)
+		resStats.StatusCode, resStats.ResponseBytes, refStr, tlsStr)
 }
 
 func handleRoot(w http.ResponseWriter, r *http.Request) {
